@@ -1,0 +1,5 @@
+flask
+requests
+flask-limiter
+python-dotenv
+gunicorn
