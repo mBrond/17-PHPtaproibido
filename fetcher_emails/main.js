@@ -1,11 +1,15 @@
 import { buscarEmails } from "./src/rotinas/fetch-emails.js";
 
+const agora = new Date();
+const dataAtual = agora.toISOString().split("T")[0]; // Ex: "2025-06-14"
+
 const TEMPLATE =
-  "Abaixo está o conteudo de um email, verifique se há possiveis reunioes ou eventos que possam ser agendados. Tarefas e atividades, entregas, trabalhos também devem ser considerados " +
-  "Se houver, responda com algo tipo '2025-07-21T14:00:00-03:00 Jogar bola com Miguel', se não responda com 'não há eventos agendados', nao responda nada alem disso. " +
-  "considere a data de hj: " +
-  new Date().toDateString() +
-  "Se houver elementos como 'outra reuniao' ou 'outro agendamento', considere que é uma reunião já agendada e deve ser criada uma nova reunião com nome tipo 'reuniao com davi 2'. segue o email: ";
+  `Abaixo está o conteúdo de um e-mail recebido no dia ${dataAtual}. ` +
+  "Verifique se há possíveis reuniões, eventos, tarefas, entregas ou atividades que possam ser agendadas. " +
+  "Caso exista algo a ser agendado, responda SOMENTE com a seguinte estrutura: '2025-07-21T14:00:00-03:00 Jogar bola com Miguel'. " +
+  "Se não houver nada a ser agendado, responda apenas com: 'não há eventos agendados'. Não escreva mais nada além disso. " +
+  "Se encontrar expressões como 'outra reunião' ou 'outro agendamento', considere que trata-se de um evento duplicado, e crie um novo evento com nome diferente, como por exemplo: 'reunião com Davi 2'. " +
+  "Segue o conteúdo do e-mail: ";
 
 function sleep(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -70,7 +74,7 @@ while (true) {
       respostaAgendamento.response?.split(" ")[0] ||
       "2025-01-01T00:00:00-03:00";
     const description =
-      respostaAgendamento.response || "Não há eventos agendados";
+      respostaAgendamento.response.split(" ")[1] || "Não há eventos agendados";
 
     const respostaCalendario = await fetch(
       "http://10.0.1.117:8080/api/events",
