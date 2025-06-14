@@ -1,0 +1,8 @@
+__pycache__
+app.py 
+gunicorn_config.py
+requirements.txt
+certs
+venv
+.env
+nginx.conf 
